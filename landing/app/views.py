@@ -2,6 +2,8 @@ from collections import Counter
 
 from django.shortcuts import render
 
+from django.http import Http404
+
 
 counter_show = Counter()
 counter_click = Counter()
@@ -21,11 +23,12 @@ def landing(request):
     if version == 'original':
         counter_show['original'] += 1
         return render(request, 'landing.html')
-    elif version == 'test':
+    if version == 'test':
         counter_show['test'] += 1
         return render(request, 'landing_alternate.html')
-
-
+    elif version == None:
+        raise Http404()
+    
 def stats(request):
     test_conversion = 0
     original_conversion = 0
